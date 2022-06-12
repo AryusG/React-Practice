@@ -5,22 +5,49 @@ const err_url = "https://httpstat.us/400";
 
 function Request() {
   const [loading, setLoading] = useState(true);
-  const [person, setPerson] = useState()
-
-  const componentDidMount = async () => {
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log(data.results);
-  }
+  const [person, setPerson] = useState({
+    firstName: "",
+    lastName: "", 
+    email: "",
+    picture: {},
+  })
 
   useEffect(() => {
-    componentDidMount(); 
-    
+    const fetchUser = async () => {
+      const res = await fetch(url);
+      const data = await res.json();
+      const data_cleaned = data.results[0];
+      console.log(data_cleaned);
+      setPerson({
+        ...person,
+        firstName: data_cleaned.name.first,
+        lastName: data_cleaned.name.last,
+        email: data_cleaned.email,
+        picture: data_cleaned.picture,
+      })
+      setLoading(false);
+      return data;
+    }
+
+    fetchUser()
+      .catch(error => {
+        alert(error);
+      })
   }, [])
+
+  if (loading) {
+    return(
+      <div>loading...</div>
+    )
+  }
 
   return (
     <div>
-      {loading ? <div>loading...</div> : <div>person...</div>}
+      <h1>
+        {person.firstName} {person.lastName}
+      </h1> 
+      <img src={person.picture.large} />
+      <p>{person.email}</p>
     </div>
   )
 }
