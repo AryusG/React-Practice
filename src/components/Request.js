@@ -11,24 +11,23 @@ function Request() {
     email: "",
     picture: {},
   })
+  
+  const fetchUser = async () => {
+    setLoading(true);
+    const res = await fetch(url);
+    const data = await res.json();
+    const data_cleaned = data.results[0];
+    setPerson({
+      ...person,
+      firstName: data_cleaned.name.first,
+      lastName: data_cleaned.name.last,
+      email: data_cleaned.email,
+      picture: data_cleaned.picture,
+    })
+    setLoading(false);
+  }
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const res = await fetch(url);
-      const data = await res.json();
-      const data_cleaned = data.results[0];
-      console.log(data_cleaned);
-      setPerson({
-        ...person,
-        firstName: data_cleaned.name.first,
-        lastName: data_cleaned.name.last,
-        email: data_cleaned.email,
-        picture: data_cleaned.picture,
-      })
-      setLoading(false);
-      return data;
-    }
-
     fetchUser()
       .catch(error => {
         alert(error);
@@ -48,6 +47,7 @@ function Request() {
       </h1> 
       <img src={person.picture.large} />
       <p>{person.email}</p>
+      <button onClick={fetchUser}>Random</button>
     </div>
   )
 }

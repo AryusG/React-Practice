@@ -8,6 +8,7 @@ import { Slides } from "./components/Slides";
 import MyForm from "./components/MyForm";
 import Testing from "./components/Testing";
 import Request from "./components/Request";
+import ValidationForm from "./components/ValidationForm";
 
 function App() {
   // const [count, updateCount] = useState(0);
@@ -17,6 +18,7 @@ function App() {
       <header className="App-header">
         <Request />
       </header>
+      <ValidationForm />
     </div>
   );
 }
